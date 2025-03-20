@@ -16,6 +16,8 @@ public class CameraControls : MonoBehaviour
     // This variable stores a GameObject we will make the camera follow
     public GameObject target;
 
+    private float initialYPos;
+
     // 2. Declare a private variable of type Vector3 named 'positionOffset'; We will assign it a value in the Start() method.
     // This variable stores a Vector3(x, y, z) we will use to determine how far the camera is from its target when following it.
     // A Serialized Field keeps a field/variable private while still allowing it to be modified in the Unity Editor
@@ -28,7 +30,8 @@ public class CameraControls : MonoBehaviour
         // 3. Assign the 'positionOffset' variable a value: this camera's position - target position
         // (HINT: which component is responsible for a GameObject's position?) 
         // This line of code calculates the difference in position between the camera and its target, then stores that value in the 'positionOffset' var
-        positionOffset= transform.position = target.transform.position;
+        initialYPos = transform.position.y;
+        positionOffset = transform.position - target.transform.position;
     }
 
     // LateUpdate() is exactly like Update(), only it is called immediately after; Great for camera movement, animations, or physics-realted calculations
@@ -40,8 +43,8 @@ public class CameraControls : MonoBehaviour
         // (HINT: The "does not equal" operator is !=)
         if (target!= null)
         {
-            Vector3 newPosition = target.transform.position - positionOffset;
-
+            Vector3 newPosition = target.transform.position + positionOffset;
+            newPosition.y = initialYPos;
             transform.position = newPosition;
         }
 
